@@ -1,0 +1,134 @@
+#!/bin/bash
+if [[ $# == 2 && $1 =~ ^[A-Za-z]+$ && $2 =~ ^[0-9]+$ ]]
+        then
+                secretKey=pass557
+                retries=3
+                echo "Please enter a secret key to run the program:-"
+                read inputKey
+                while [[ $inputKey != $secretKey && $retries -gt 0 ]]
+                do
+                        echo "Please enter a correct secret key to run the program. Retries left:- $retries"
+                                read inputKey
+                        retries=$((retries-1))
+                done
+                if [ $retries -le 0 ]
+                then
+                        exit
+                fi
+        echo "Welcome $2, $1"
+        echo at `date +"%Y-%m-%d %T"`
+
+        answer=yes
+        while [ $answer == "yes" ]
+        do
+        Bands(){
+                echo "|-------------------|------------------|"
+                echo "|      BANDS        |       CODE       |"
+                echo "|-------------------|------------------|"
+                echo "|      Beatles      |       BEA        |"
+                echo "|      AC/DC        |       AD         |"
+                echo "|      Queen        |       QUE        |"
+                echo "|      Blondie      |       BLO        |"
+                echo "|      Nirvana      |       NIR        |"
+                echo "|--------------------------------------|"
+                echo "Choose the best music band by their designated code."
+        }
+        Band_Code_Selection(){
+                read bandCode
+                until [[ $bandCode == "AD" ]];
+                do
+                        echo "Wrong guess. Please choose the correct band code from the list below:-"
+                        Bands
+                        read bandCode
+                done
+                        echo "AC/DC is an Australian rock band founded by Scottish-born brothers Malcolm and Angus Young. Hard rock, blues rock, and heavy metal have all been used to characterize its sound, but the band simply refers to it as rock and roll."
+        }
+                Bands
+                Band_Code_Selection
+        Artists(){
+                echo
+                echo "Choose three best musical artists in the world from the list below with their designated code."
+                echo
+                echo "|-------------------|-------------------|"
+                echo "|       ARTISTS     |        CODE       |"
+                echo "|-------------------|-------------------|"
+                echo "|     John Lennon   |         JL        |"
+                echo "|     Angus Young   |         AY        |"
+                echo "|  Freddie Mercury  |         FM        |"
+                echo "|    Debby Harry    |         DH        |"
+                echo "|    Kurt Cobain    |         KC        |"
+                echo "|---------------------------------------|"
+                echo
+                echo
+                echo "Format: artist_code_1 artist_code_2 artist_code_3"
+                echo "e.g. JL AY FM"
+        }
+        Reloop_Program(){
+                echo "Do you want to run the program again? (yes/no)"
+                read answer
+                if [ $answer = yes ]
+                then
+                        Bands
+                        Band_Code_Selection
+                        Artists
+                        Artist_Selection
+                        Reloop_Program
+                else
+                        exit
+                fi
+        }
+        Artist_Selection(){
+        # Artists
+        read a1 a2 a3
+        artists=($a1 $a2 $a3)
+        if [[ -z $a1 || -z $a2 || -z $a3 ]]
+        then
+                echo "Empty Field."
+        elif [[ ${#artists[@]} -gt 3 ]]
+        then
+                echo "More than 3 arguments"
+        elif [[ "$a1" == "$a2" || "$a1" == "$a3" || "$a2" == "$a3" ]]
+        then
+                echo "Same code entered more than once."
+        else
+                echo "Select one number from the above code:-"
+        select a in $a1 $a2 $a3
+                do
+                        if [ "$a" = "JL" ]
+                        then
+                                cat JL
+                                break
+                        elif [ "$a" = "FM" ]
+                        then
+                                cat FM
+                                break
+                        elif [ "$a" = "KC" ]
+                        then
+                                cat KC
+                                break
+                        elif [[ -z $a ]]
+                        then
+                                echo "Invalid option chosen! Please try once again."
+                                Artists
+                                Artist_Selection
+                                break
+                        else
+                                echo "Wrong choice. No external file found. Redirected to the Band selection screen."
+                                Bands
+                                Band_Code_Selection
+                                Artists
+                                Artist_Selection
+                                Reloop_Program
+                        fi
+                done
+        fi
+        }
+        Artists
+        Artist_Selection
+        Reloop_Program
+        done
+else
+        echo "Wrong Format"
+        echo "Correct Format:- bash cw2p2 student's_first_name id"
+        echo "e.g bash cw2p2 Baibhab 20049393"
+fi
